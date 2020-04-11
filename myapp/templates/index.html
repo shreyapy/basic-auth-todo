@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+        <h1>TodoApp</h1>
+        <p class="subheading">A DJANGO TODO APP</p>
+        <form method="POST" action="/add-todo" autocomplete="off" onsubmit="return false;">
+            {% csrf_token %}
+            <div id="description">
+                <h6>DESCRIPTION</h6>
+                <input type="text" name="task" placeholder="What do you need to do?">
+            </div>
+            <div id="category">
+                <h6>CATEGORY</h6>
+                <select name="category">
+                    <option value="Select">Select</option>
+                    <option value="Private">Private</option>
+                    <option value="Work">Work</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="Paid">Paid</option>
+                </select>
+            </div>
+            <div id="due-date">
+                <h6>DUE DATE</h6>
+                <input id="date" type="date" name="due-data" min="2020-04-07">
+            </div>
+
+            <button onclick="submitForm()" class="add-button"><i class="fas fa-plus"></i>Add Todo</button>
+            <button onclick="deleteTodos()" class="delete-button"><i class="fas fa-trash-alt"></i>Delete Todo</button>
+        </form>
+
+        <div id="todo-list">
+            {% for todo in todos %}
+            <div id="tile">
+                <label class="container">
+                    <input onchange="toggleTodoList('{{ todo.id }}')" type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+                <div id="desc">
+                    <h4>{{ todo.task }}</h4>
+                    <p class="date"><i class='far fa-calendar-alt'></i>{{ todo.date_created }} - {{ todo.due_date }}</p>
+                </div>
+                <div class="category">{{ todo.category }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+    <script src="{% static 'initialize.js' %}"></script>
+    <script src="{% static 'addTodo.js' %}"></script>
+    <script src="{% static 'deleteTodos.js' %}"></script>
+</body>
+</html>
